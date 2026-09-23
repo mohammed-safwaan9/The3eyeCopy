@@ -1,0 +1,11 @@
+{
+  "title": "The3eye",
+  "description": "Generates high-quality, optimized prompts to help users create effective content quickly and enhance their creative workflows.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

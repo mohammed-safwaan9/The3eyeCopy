@@ -1,0 +1,251 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import 'leaflet/dist/leaflet.css';
+@import 'tailwindcss';
+
+/* ─────────────────────────────────────────
+   THE3EYE — Design System Tokens v3
+   ───────────────────────────────────────── */
+:root {
+  /* ── Brand palette (from official logo) ── */
+  --brand-blue:  #0878FF;
+  --brand-cyan:  #00C9E8;
+  --brand-aqua:  #20D9C5;
+  --brand-green: #19D88A;
+  --brand-navy:  #03101F;
+
+  /* ── Semantic alert colours ── independent of brand */
+  --c-green:   #19D88A;   /* positive / confirmed / active */
+  --c-red:     #E04545;   /* traffic checking / closure    */
+  --c-blue:    #2E72F0;   /* camera                        */
+  --c-amber:   #C97D0A;   /* hazard                        */
+  --c-purple:  #6E54CC;   /* accident                      */
+  --c-yellow:  #B89910;   /* roadwork                      */
+  --c-cyan:    #00B8D4;   /* flood                         */
+  --c-dark:    #2D3340;   /* closure                       */
+
+  /* ── Typography scale ── */
+  --text-display: 700 28px/1.15 'Inter', system-ui, sans-serif;
+  --text-title:   600 18px/1.3  'Inter', system-ui, sans-serif;
+  --text-heading: 600 14px/1.4  'Inter', system-ui, sans-serif;
+  --text-body:    400 14px/1.55 'Inter', system-ui, sans-serif;
+  --text-label:   500 12px/1.4  'Inter', system-ui, sans-serif;
+  --text-caption: 400 11px/1.4  'Inter', system-ui, sans-serif;
+  --text-mono:    500 13px/1.3  'JetBrains Mono', monospace;
+  --text-mono-lg: 600 22px/1.1  'JetBrains Mono', monospace;
+  --text-mono-xl: 700 32px/1.0  'JetBrains Mono', monospace;
+
+  /* ── Radius ── */
+  --r-xs:  4px;
+  --r-sm:  8px;
+  --r-md:  12px;
+  --r-lg:  16px;
+  --r-xl:  24px;
+
+  /* ── Elevation — restrained, 2 levels only ── */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+  --shadow-md: 0 2px 8px rgba(0,0,0,0.14), 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* ── Night Drive (default — deep navy) ── */
+:root, [data-theme="night"] {
+  --bg:            #060A10;
+  --bg-surface:    #0C1624;
+  --bg-raised:     #132030;
+  --bg-subtle:     #0A1320;
+  --bg-input:      #132030;
+  --fg:            #EDF2FB;
+  --fg-2:          #7A90A8;
+  --fg-3:          #4A5E74;
+  --border:        rgba(100,160,255,0.08);
+  --border-2:      rgba(100,160,255,0.15);
+  /* Map — night: roads clearly lighter than ground */
+  --map-ground:    #111926;
+  --map-ground-2:  #0F1622;
+  --map-block:     #0D1522;
+  --map-block-2:   #0F1826;
+  --map-road-hwy:  #2C4464;   /* was #1E2B40 — much more visible */
+  --map-road-hwy2: #344E72;   /* expressway — brightest */
+  --map-road-sec:  #1E3250;   /* was #172030 */
+  --map-road-min:  #18263E;   /* was #131A28 */
+  --map-water:     #0C1C32;   /* darker, clear blue */
+  --map-park:      #0D1E12;   /* dark green */
+  --map-park-2:    #0F2215;
+  --map-label:     rgba(180,205,240,0.58);
+  --map-label-sm:  rgba(160,190,225,0.42);
+  --map-dash:      rgba(120,170,220,0.32);
+  --nav-bg:        rgba(6,9,15,0.88);
+  --sheet-bg:      #0D1520;
+  --overlay-nav:   rgba(10,16,26,0.90);
+  --shadow-sm:     0 1px 3px rgba(0,0,0,0.5),  0 1px 2px rgba(0,0,0,0.3);
+  --shadow-md:     0 4px 16px rgba(0,0,0,0.55), 0 1px 4px rgba(0,0,0,0.3);
+}
+
+/* ── Signal (light) ── */
+[data-theme="signal"] {
+  --bg:            #F2F4F8;
+  --bg-surface:    #FFFFFF;
+  --bg-raised:     #FFFFFF;
+  --bg-subtle:     #EAEDF2;
+  --bg-input:      #EAEDF2;
+  --fg:            #0C1220;
+  --fg-2:          #4A5568;
+  --fg-3:          #8896A8;
+  --border:        rgba(12,18,32,0.07);
+  --border-2:      rgba(12,18,32,0.12);
+  /* Map — light: roads clearly lighter than surrounding land */
+  --map-ground:    #D8E2EF;
+  --map-ground-2:  #CFDAEB;
+  --map-block:     #C2CDE0;
+  --map-block-2:   #C8D4E4;
+  --map-road-hwy:  #EAEFF8;   /* light roads on darker ground */
+  --map-road-hwy2: #F0F4FC;   /* expressway — near white */
+  --map-road-sec:  #E2E8F4;
+  --map-road-min:  #D8E0EE;
+  --map-water:     #96B2CC;
+  --map-park:      #B0C8A8;
+  --map-park-2:    #BAD0B2;
+  --map-label:     rgba(30,50,90,0.68);
+  --map-label-sm:  rgba(40,60,100,0.50);
+  --map-dash:      rgba(60,90,140,0.28);
+  --nav-bg:        rgba(242,244,248,0.9);
+  --sheet-bg:      #FFFFFF;
+  --overlay-nav:   rgba(240,244,250,0.92);
+  --shadow-sm:     0 1px 2px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+  --shadow-md:     0 2px 8px rgba(0,0,0,0.09), 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* ── Midnight Blue ── */
+[data-theme="midnight"] {
+  --bg:            #020810;
+  --bg-surface:    #080E1E;
+  --bg-raised:     #0D1428;
+  --bg-subtle:     #05090F;
+  --bg-input:      #0D1428;
+  --fg:            #DCE8FF;
+  --fg-2:          #5E78A0;
+  --fg-3:          #2E3E58;
+  --border:        rgba(80,130,255,0.07);
+  --border-2:      rgba(80,130,255,0.13);
+  --map-ground:    #060C1A;
+  --map-ground-2:  #050A16;
+  --map-block:     #040810;
+  --map-block-2:   #060A14;
+  --map-road-hwy:  #163058;
+  --map-road-hwy2: #1A3868;
+  --map-road-sec:  #0E2040;
+  --map-road-min:  #0A1830;
+  --map-water:     #040A14;
+  --map-park:      #061010;
+  --map-park-2:    #081414;
+  --map-label:     rgba(100,160,240,0.50);
+  --map-label-sm:  rgba(80,140,220,0.38);
+  --map-dash:      rgba(60,120,200,0.28);
+  --nav-bg:        rgba(2,8,16,0.9);
+  --sheet-bg:      #080E1E;
+  --overlay-nav:   rgba(4,10,22,0.92);
+  --shadow-sm:     0 1px 3px rgba(0,0,0,0.7);
+  --shadow-md:     0 4px 20px rgba(0,0,20,0.7);
+}
+
+/* ── High Contrast ── */
+[data-theme="contrast"] {
+  --bg:            #000000;
+  --bg-surface:    #050505;
+  --bg-raised:     #0F0F0F;
+  --bg-subtle:     #030303;
+  --bg-input:      #0F0F0F;
+  --fg:            #FFFFFF;
+  --fg-2:          #CCCCCC;
+  --fg-3:          #777777;
+  --border:        rgba(255,255,255,0.22);
+  --border-2:      rgba(255,255,255,0.38);
+  --map-ground:    #080808;
+  --map-ground-2:  #060606;
+  --map-block:     #060606;
+  --map-block-2:   #070707;
+  --map-road-hwy:  #303030;
+  --map-road-hwy2: #3A3A3A;
+  --map-road-sec:  #222222;
+  --map-road-min:  #161616;
+  --map-water:     #060614;
+  --map-park:      #060C06;
+  --map-park-2:    #081008;
+  --map-label:     rgba(255,255,255,0.70);
+  --map-label-sm:  rgba(255,255,255,0.55);
+  --map-dash:      rgba(255,255,255,0.35);
+  --nav-bg:        rgba(0,0,0,0.96);
+  --sheet-bg:      #050505;
+  --overlay-nav:   rgba(0,0,0,0.96);
+  --c-green:  #00FF88;
+  --c-red:    #FF3B3B;
+  --c-blue:   #3D80FF;
+  --shadow-sm:  0 0 0 1px rgba(255,255,255,0.18);
+  --shadow-md:  0 0 0 1px rgba(255,255,255,0.25);
+}
+
+/* ─── Base ─── */
+html, body, #root { height: 100%; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+  font: var(--text-body);
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+.no-scroll::-webkit-scrollbar { display: none; }
+.no-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Confine Leaflet within its container */
+.leaflet-container { overflow: hidden; }
+
+/* ─── Animations ─── */
+@keyframes fade-in      { from { opacity: 0; }                           to { opacity: 1; } }
+@keyframes slide-up     { from { transform: translateY(14px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes scale-pop    { 0% { transform: scale(0.9); opacity: 0; } 70% { transform: scale(1.02); } 100% { transform: scale(1); opacity: 1; } }
+@keyframes marker-in    { 0% { transform: scale(0) translateY(6px); opacity: 0; } 75% { transform: scale(1.07) translateY(-1px); } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+@keyframes spin         { to { transform: rotate(360deg); } }
+@keyframes pulse-live   { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+@keyframes draw-route   { from { stroke-dashoffset: 700; } to { stroke-dashoffset: 0; } }
+@keyframes shimmer-in   { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.anim-fade   { animation: fade-in    0.18s ease both; }
+.anim-up     { animation: slide-up   0.26s cubic-bezier(0.2,0,0,1) both; }
+.anim-pop    { animation: scale-pop  0.3s  cubic-bezier(0.34,1.4,0.64,1) both; }
+.anim-marker { animation: marker-in  0.32s cubic-bezier(0.34,1.4,0.64,1) both; }
+.anim-spin   { animation: spin 0.85s linear infinite; }
+
+/* Press state */
+.pressable { transition: transform 0.08s ease, opacity 0.08s ease; cursor: pointer; }
+.pressable:active { transform: scale(0.95); opacity: 0.78; }
+
+/* Nav blur surface */
+.nav-surface {
+  background: var(--nav-bg);
+  backdrop-filter: blur(24px) saturate(1.5);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  border-top: 1px solid var(--border);
+}
+
+/* Brand gradient (use sparingly) */
+.brand-gradient { background: linear-gradient(135deg, var(--brand-blue), var(--brand-cyan), var(--brand-green)); }
+.brand-text-gradient {
+  background: linear-gradient(135deg, var(--brand-blue), var(--brand-cyan), var(--brand-green));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Toggle */
+.toggle { position: relative; width: 44px; height: 26px; border-radius: 13px; transition: background 0.2s ease; flex-shrink: 0; }
+.toggle-knob { position: absolute; top: 3px; width: 20px; height: 20px; border-radius: 10px; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.25); transition: left 0.18s ease; }
+
+/* Theme transition */
+*, *::before, *::after { transition: background-color 0.22s ease, border-color 0.22s ease, color 0.15s ease; }
+.no-transition, .no-transition * { transition: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
